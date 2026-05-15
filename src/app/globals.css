@@ -16,32 +16,18 @@
   font-display: swap;
 }
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-glass: rgba(255, 255, 255, 0.8);
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-glass: rgba(15, 23, 42, 0.8);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
   --radius: 12px;
-  --map-filter: grayscale(100%) sepia(20%) hue-rotate(200deg) contrast(1.1);
-  --image-filter: contrast(1.15) saturate(1.05) brightness(0.95);
+  --map-filter: grayscale(100%) invert(90%) sepia(40%) hue-rotate(220deg) saturate(200%) contrast(0.95);
+  --image-filter: contrast(1.15) saturate(1.05) brightness(0.85);
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-glass: rgba(15, 23, 42, 0.8);
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --map-filter: grayscale(100%) invert(90%) sepia(40%) hue-rotate(220deg) saturate(200%) contrast(0.95);
-    --image-filter: contrast(1.15) saturate(1.05) brightness(0.85);
-    --accent: #3b82f6;
-    --accent-hover: #60a5fa;
-  }
 }
 
 * {
