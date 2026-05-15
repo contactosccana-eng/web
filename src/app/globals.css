@@ -36,10 +36,10 @@
   padding: 0;
 }
 
-body {
+html, body {
   font-family: 'PP Neue Machina', sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s, color 0.3s;
