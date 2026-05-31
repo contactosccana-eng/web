@@ -10,7 +10,8 @@ export default function CuentaCafePage() {
 8927686-1
 Banco de Chile
 Cuenta Corriente
-1050143101`;
+1050143101
+monardesdebra@gmail.com`;
 
   const handleCopy = async () => {
     try {
