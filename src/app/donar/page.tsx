@@ -267,7 +267,7 @@ aricacomu@gmail.com`;
         </div>
 
         <img src="/logo.png" alt="ComuArica Logo" className="header-logo" />
-        <h1 className="donar-title">Diezmos y Ofrendas</h1>
+        <h1 className="donar-title">Diezmos, Ofrendas e Inscripciones</h1>
         <p className="donar-subtitle">
           Copia los datos bancarios exactos a continuación para transferir tus aportes y aportaciones.
         </p>
