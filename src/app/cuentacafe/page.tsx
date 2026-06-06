@@ -7,7 +7,7 @@ export default function CuentaCafePage() {
 
   // El texto exacto con el formato original provisto por el usuario
   const bankDataText = `Cafeteria Comuarica
-8927686-1
+8988401-2
 Banco de Chile
 Cuenta Corriente
 1050143101
