@@ -15,6 +15,38 @@ interface Attendee {
   comprobanteUrl?: string;
 }
 
+// Helper para interactuar con sessionStorage de forma segura en dispositivos/navegadores antiguos (por ejemplo, Safari en modo privado)
+const safeSessionStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window !== "undefined" && window.sessionStorage) {
+        return sessionStorage.getItem(key);
+      }
+    } catch (e) {
+      console.warn("sessionStorage no disponible:", e);
+    }
+    return null;
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== "undefined" && window.sessionStorage) {
+        sessionStorage.setItem(key, value);
+      }
+    } catch (e) {
+      console.warn("sessionStorage no disponible:", e);
+    }
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== "undefined" && window.sessionStorage) {
+        sessionStorage.removeItem(key);
+      }
+    } catch (e) {
+      console.warn("sessionStorage no disponible:", e);
+    }
+  }
+};
+
 export default function CheckinPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
@@ -32,7 +64,7 @@ export default function CheckinPage() {
   const isBeforeOpenDate = new Date() < OPEN_DATE;
 
   useEffect(() => {
-    const auth = sessionStorage.getItem("comuarica_staff_auth");
+    const auth = safeSessionStorage.getItem("comuarica_staff_auth");
     if (auth === "true") {
       setIsAuthenticated(true);
       startPolling();
@@ -54,7 +86,7 @@ export default function CheckinPage() {
     e.preventDefault();
     if (passwordInput.toLowerCase() === "staff" || passwordInput === "comuarica2024") {
       setIsAuthenticated(true);
-      sessionStorage.setItem("comuarica_staff_auth", "true");
+      safeSessionStorage.setItem("comuarica_staff_auth", "true");
       startPolling();
     } else {
       setLoginError("Contraseña incorrecta.");
@@ -62,7 +94,7 @@ export default function CheckinPage() {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("comuarica_staff_auth");
+    safeSessionStorage.removeItem("comuarica_staff_auth");
     setIsAuthenticated(false);
     stopPolling();
   };
