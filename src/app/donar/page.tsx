@@ -7,7 +7,7 @@ export default function DonarPage() {
 
   // El texto exacto con el formato original provisto por el usuario
   const bankDataText = `Inmobiliaria Zoe LTDA
-76.766.520-2
+76766520-2
 Banco Scotiabank 
 Cuenta Corriente 
 56014918
