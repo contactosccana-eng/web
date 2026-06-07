@@ -7,7 +7,7 @@ export default function MerchPage() {
 
   // El texto exacto con el formato original provisto por el usuario
   const bankDataText = `Merch Comuarica
-8.988.401-2
+8988401-2
 Banco de Chile
 Cuenta Vista
 00-028-51240-58
