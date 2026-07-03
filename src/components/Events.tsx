@@ -13,12 +13,11 @@ export default function Events() {
   };
 
   const proximosEventos = [
-    { id: 2, name: 'CAV SANTIAGO', date: '17 - 18 JUL', image: '/cav.png' },
-    { id: 1, name: 'AMADAS', date: '13 - 16 AGO', image: '/amadas.png' },
-    { id: 3, name: 'CAV ANCUD', date: '4 - 5 SEP', image: '/cav.png' },
-    { id: 4, name: 'CAV ARICA', date: '2 - 3 OCT', image: '/cav.png' },
-    { id: 5, name: 'VALIENTES', date: '12 - 15 NOV', image: '/valientes.png', scale: 1.4 },
-    { id: 6, name: 'NAVIDAD ES JESÚS', date: '27 DIC', image: '/navidad es jesus.png' },
+    { id: 2, name: 'CAV SANTIAGO', date: '17 - 18 JUL', image: '/cav.jpg' },
+    { id: 3, name: 'CAV ANCUD', date: '4 - 5 SEP', image: '/cav.jpg' },
+    { id: 4, name: 'CAV ARICA', date: '2 - 3 OCT', image: '/cav.jpg' },
+    { id: 5, name: 'VALIENTES', date: '12 - 15 NOV', image: '/valientes.jpg', scale: 1.4 },
+    { id: 6, name: 'NAVIDAD ES JESÚS', date: '27 DIC', image: '/navidad es jesus.jpg' },
   ];
 
   return (
@@ -31,10 +30,10 @@ export default function Events() {
           <div style={styles.column}>
             <h3 style={{...styles.sectionSubtitle, marginBottom: '24px'}}>Destacado</h3>
             <div className="event-card" style={{...styles.featuredCard, padding: 0, overflow: 'hidden', position: 'relative'}}>
-              <div style={{ ...styles.cardBgImage, backgroundImage: `url('/convencion.png')` }} />
+              <div style={{ ...styles.cardBgImage, backgroundImage: `url('/amadas.jpg')` }} />
               
               <div style={{ position: 'relative', zIndex: 2, padding: '40px 40px 20px 40px', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-end' }}>
-                <a href="https://tally.so/r/rjJOq2" target="_blank" rel="noopener noreferrer" className="btn" style={{ alignSelf: 'center' }}>
+                <a href="https://tally.so/r/Zjg0MB" target="_blank" rel="noopener noreferrer" className="btn" style={{ alignSelf: 'center' }}>
                   REGÍSTRATE
                 </a>
               </div>
