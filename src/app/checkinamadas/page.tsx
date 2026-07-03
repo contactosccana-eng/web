@@ -56,6 +56,7 @@ export default function CheckinAmadasPage() {
   const [filtered, setFiltered] = useState<Attendee[]>([]);
   const [search, setSearch] = useState("");
   const [syncingId, setSyncingId] = useState<string | null>(null);
+  const [modalImage, setModalImage] = useState<string | null>(null);
 
   const pollingInterval = useRef<NodeJS.Timeout | null>(null);
 
@@ -149,7 +150,7 @@ export default function CheckinAmadasPage() {
   };
 
   const handleConfirmRegistration = async (id: string, nombre: string) => {
-    const confirmed = window.confirm(`¿Estás seguro que quieres CONFIRMAR el registro de ${nombre}?\n\nSe enviará un correo electrónico de confirmación automáticamente.`);
+    const confirmed = window.confirm(`¿Estás seguro que quieres CONFIRMAR el registro de ${nombre}?\n\nSe enviará el correo electrónico indicando que el pago está VERIFICADO.`);
     if (!confirmed) return;
 
     setSyncingId(id);
@@ -308,6 +309,32 @@ export default function CheckinAmadasPage() {
             justify-content: space-between;
           }
         }
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          padding: 20px;
+        }
+        .modal-content {
+          background: var(--bg-secondary);
+          border: 1px solid rgba(150,150,150,0.1);
+          border-radius: var(--radius);
+          padding: 30px;
+          max-width: 600px;
+          width: 100%;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
       `}} />
 
       {!isAuthenticated ? (
@@ -378,9 +405,12 @@ export default function CheckinAmadasPage() {
 
                 <div className="actions-group">
                   {attendee.comprobanteUrl && attendee.comprobanteUrl !== "undefined" && (
-                    <a href={attendee.comprobanteUrl} target="_blank" rel="noopener noreferrer" className="btn-ui btn-dark">
-                      Ver Pago
-                    </a>
+                    <button 
+                      onClick={() => setModalImage(attendee.comprobanteUrl || null)}
+                      className="btn-ui btn-dark"
+                    >
+                      Ver Comprobante
+                    </button>
                   )}
 
                   {!attendee.confirmado && (
@@ -389,7 +419,7 @@ export default function CheckinAmadasPage() {
                       disabled={syncingId === attendee.id}
                       className="btn-ui btn-blue"
                     >
-                      {syncingId === attendee.id ? "..." : "Confirmar Registro"}
+                      {syncingId === attendee.id ? "..." : "Enviar Confirmación"}
                     </button>
                   )}
                   
@@ -404,6 +434,45 @@ export default function CheckinAmadasPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {modalImage && (
+        <div className="modal-overlay" onClick={() => setModalImage(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', alignItems: 'center' }}>
+              <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Comprobante de Pago</h3>
+              <button 
+                onClick={() => setModalImage(null)} 
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '24px', fontWeight: 'bold' }}
+              >
+                &times;
+              </button>
+            </header>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxHeight: '70vh', overflow: 'auto' }}>
+              {/* Intentar renderizar la imagen si es una URL válida */}
+              {modalImage.startsWith('http') && (
+                <img 
+                  src={modalImage} 
+                  alt="Comprobante de Pago" 
+                  style={{ maxWidth: '100%', maxHeight: '68vh', objectFit: 'contain', borderRadius: '8px' }} 
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = document.getElementById('modal-fallback');
+                    if (fallback) fallback.style.display = 'block';
+                  }}
+                />
+              )}
+              
+              <div id="modal-fallback" style={{ display: !modalImage.startsWith('http') ? 'block' : 'none', textAlign: 'center', padding: '20px' }}>
+                <p style={{ marginBottom: '16px' }}>El comprobante no se puede previsualizar directamente en esta pantalla.</p>
+                <a href={modalImage} target="_blank" rel="noopener noreferrer" className="btn-ui btn-blue" style={{ display: 'inline-block', textDecoration: 'none' }}>
+                  Abrir comprobante en nueva pestaña
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}
