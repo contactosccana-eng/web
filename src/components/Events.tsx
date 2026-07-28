@@ -17,7 +17,7 @@ export default function Events() {
     { id: 3, name: 'CAV ANCUD', date: '4 - 5 SEP', image: '/cav.jpg' },
     { id: 4, name: 'CAV ARICA', date: '2 - 3 OCT', image: '/cav.jpg' },
     { id: 5, name: 'VALIENTES', date: '12 - 15 NOV', image: '/valientes.jpg', scale: 1.4 },
-    { id: 6, name: 'NAVIDAD ES JESÚS', date: '27 DIC', image: '/navidad es jesus.jpg' },
+    { id: 6, name: 'NAVIDAD ES JESÚS', date: '19 DIC', image: '/navidad es jesus.jpg' },
   ];
 
   return (
