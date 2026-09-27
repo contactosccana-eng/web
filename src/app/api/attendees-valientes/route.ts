@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 // URL del script de Google Apps Script para la planilla de VALIENTES 26.
-const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL_VALIENTES || 'https://script.google.com/macros/s/AKfycbxrQCxIWb4r0S5Bw1NicCwOYF1t_vg8uiUFpb2beaBTdO7C6gSYJcQbtDjNC7kHdGro/exec';
+const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL_VALIENTES || 'https://script.google.com/macros/s/AKfycbwZw4Z-CUoCR2QAA4nAF3NsATmdl9rkl7MuhXmxhANMfJWvD0BUBHUb4ZDDPKpRxeS4/exec';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
