@@ -306,6 +306,32 @@
   color: var(--mute);
 }
 
+.pillarsLabel {
+  margin-top: 28px;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.pillars {
+  list-style: none;
+  padding: 0;
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pillars li {
+  font-family: 'PP Neue Machina', 'Montserrat', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  padding: 10px 14px;
+  border: 1.5px solid var(--gold);
+  color: var(--bone);
+}
+
 /* ---------- Programa ---------- */
 .days {
   display: grid;

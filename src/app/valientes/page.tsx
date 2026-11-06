@@ -16,9 +16,9 @@ const days = [
   {
     n: "12",
     dow: "Jueves",
-    place: "Campus Lluta",
+    place: "Arica → Campus Lluta",
     title: "Llegada y apertura",
-    text: "Acreditación, entrega de kits y apertura oficial de Valientes 26. Comienza la inmersión.",
+    text: "Acreditación, culto y apertura oficial de Valientes 26. Traslado a Campus Lluta.",
   },
   {
     n: "13",
@@ -30,9 +30,9 @@ const days = [
   {
     n: "14",
     dow: "Sábado",
-    place: "Campus Lluta → Sede Central",
+    place: "Campus Lluta → Auditorio Comuarica",
     title: "Cierre de campo y regreso",
-    text: "Último bloque en Campus Lluta (hasta las 14:30) y traslado a la sede para la tarde de cierre.",
+    text: "Actividades de campo hasta las 18:00. Último día en Campus Lluta y traslado al auditorio Comuarica.",
   },
   {
     n: "15",
@@ -154,12 +154,18 @@ export default function ValientesPage() {
               Cuatro dias <em>fuera de la rutina</em>
             </h2>
             <p className={styles.lead}>
-              Valientes es una experiencia de formación, liderazgo y fe: plenarias, talleres, desafíos al aire libre
+              Valientes es una experiencia de formación, aprendizaje y fe: plenarias, talleres, desafíos al aire libre
               y noches de adoración en medio del valle de Lluta.
             </p>
+            <p className={styles.pillarsLabel}>Nuestros pilares</p>
+            <ul className={styles.pillars}>
+              <li>Ganar a Cristo</li>
+              <li>Compañerismo y comunión en grupo</li>
+              <li>Desafíos físicos</li>
+            </ul>
             <p className={styles.body}>
-              Nos dividimos en escuadrones, aprendemos a trabajar en equipo y volvemos a la ciudad con el carácter
-              más firme. Cierra con un culto de clausura el domingo, junto a la comunidad.
+              Nos agrupamos en escuadrones, aprendemos a trabajar en equipo y volvemos a la ciudad habiendo vivido
+              una experiencia extraordinaria con Dios.
             </p>
           </div>
           <div className={styles.stats}>
