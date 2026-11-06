@@ -30,9 +30,14 @@ export default function Events() {
               <div style={{ ...styles.cardBgImage, backgroundImage: `url('/valientes_destacado.jpg')` }} />
               
               <div style={{ position: 'relative', zIndex: 2, padding: '40px 40px 20px 40px', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'flex-end' }}>
-                <a href="https://tally.so/r/jaNzd1" target="_blank" rel="noopener noreferrer" className="btn" style={{ alignSelf: 'center' }}>
-                  REGÍSTRATE
-                </a>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <a href="/valientes" className="btn btn-secondary">
+                    MÁS INFO
+                  </a>
+                  <a href="https://tally.so/r/jaNzd1" target="_blank" rel="noopener noreferrer" className="btn">
+                    REGÍSTRATE
+                  </a>
+                </div>
               </div>
             </div>
           </div>
