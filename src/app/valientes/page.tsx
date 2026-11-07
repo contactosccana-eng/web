@@ -16,9 +16,9 @@ const days = [
   {
     n: "12",
     dow: "Jueves",
-    place: "Arica → Campus Lluta",
-    title: "Llegada y apertura",
-    text: "Acreditación, culto y apertura oficial de Valientes 26. Traslado a Campus Lluta.",
+    place: "Auditorio Comuarica → Campus Lluta",
+    title: "Reunión de apertura",
+    text: "19:00 a 21:00 reunión de apertura en el auditorio Comuarica. A las 21:00 salida rumbo a Campus Lluta para armar campamento.",
   },
   {
     n: "13",
@@ -32,7 +32,7 @@ const days = [
     dow: "Sábado",
     place: "Campus Lluta → Auditorio Comuarica",
     title: "Cierre de campo y regreso",
-    text: "Actividades de campo hasta las 18:00. Último día en Campus Lluta y traslado al auditorio Comuarica.",
+    text: "Actividades de campo hasta las 18:00. Último día en Campus Lluta. A las 19:00 regreso al auditorio Comuarica.",
   },
   {
     n: "15",
