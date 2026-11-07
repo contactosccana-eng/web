@@ -312,9 +312,6 @@ export default function ValientesPage() {
               </article>
             ))}
           </div>
-          <div style={{ marginTop: 32 }}>
-            <Link href="/merch" className={styles.btn}>Cómo pagar tu merch</Link>
-          </div>
         </div>
       </section>
 
