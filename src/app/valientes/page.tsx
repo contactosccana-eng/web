@@ -280,7 +280,7 @@ export default function ValientesPage() {
               loading="lazy"
             />
             <figcaption>
-              Vestimentas oficiales. Mangas y calzas largas son opcionales, para evitar picaduras de insectos.
+              Vestimenta oficial de carácter obligatorio. Mangas y calzas largas son opcionales, para evitar picaduras de insectos.
             </figcaption>
           </figure>
         </div>
