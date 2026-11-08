@@ -46,6 +46,182 @@ const safeSessionStorage = {
   }
 };
 
+// ---------- Listado en imagen (1080 px de ancho, estilo /valientes) ----------
+const IMG_W = 1080;
+const C_GOLD = "#ffc20e";
+const C_INK = "#0b0a08";
+const C_BONE = "#f4efe6";
+const C_MUTE = "#b9b2a3";
+const C_LINE = "rgba(255,255,255,0.14)";
+
+const noAccents = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+const titleCase = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
+const loadImg = (src: string) =>
+  new Promise<HTMLImageElement>((res, rej) => {
+    const i = new Image();
+    i.onload = () => res(i);
+    i.onerror = rej;
+    i.src = src;
+  });
+
+function fitText(ctx: CanvasRenderingContext2D, text: string, maxW: number) {
+  if (ctx.measureText(text).width <= maxW) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(t + "…").width > maxW) t = t.slice(0, -1);
+  return t.trimEnd() + "…";
+}
+
+function setSpacing(ctx: CanvasRenderingContext2D, px: number) {
+  (ctx as unknown as { letterSpacing: string }).letterSpacing = `${px}px`;
+}
+
+async function buildListadoImage(
+  rows: Attendee[],
+  query: string,
+  opts: { phone: boolean; status: boolean }
+): Promise<string> {
+  const font = new FontFace("Long Shot", "url(/fonts/LongShot.ttf)");
+  await font.load();
+  document.fonts.add(font);
+  await Promise.all([document.fonts.load("800 32px Montserrat"), document.fonts.load("500 22px Montserrat")]);
+  const [hero, logo] = await Promise.all([loadImg("/valientes/hero.jpg"), loadImg("/logo.png").catch(() => null)]);
+
+  const sorted = [...rows].sort((a, b) =>
+    `${a.apellido} ${a.nombre}`.localeCompare(`${b.apellido} ${b.nombre}`, "es", { sensitivity: "base" })
+  );
+
+  const HERO_H = 440;
+  const HEAD_H = 250;
+  const ROW_H = 100;
+  const FOOT_H = 100;
+  const total = HERO_H + HEAD_H + sorted.length * ROW_H + 50 + FOOT_H;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = IMG_W;
+  canvas.height = total;
+  const ctx = canvas.getContext("2d")!;
+  ctx.textBaseline = "alphabetic";
+
+  // Fondo
+  ctx.fillStyle = C_INK;
+  ctx.fillRect(0, 0, IMG_W, total);
+
+  // Hero con la bandera
+  const sc = Math.max(IMG_W / hero.width, HERO_H / hero.height);
+  const hw = hero.width * sc;
+  const hh = hero.height * sc;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, IMG_W, HERO_H);
+  ctx.clip();
+  ctx.drawImage(hero, (IMG_W - hw) / 2, -(hh - HERO_H) * 0.3, hw, hh);
+  ctx.restore();
+  const g = ctx.createLinearGradient(0, 0, 0, HERO_H);
+  g.addColorStop(0, "rgba(11,10,8,0.10)");
+  g.addColorStop(0.55, "rgba(11,10,8,0.45)");
+  g.addColorStop(1, "rgba(11,10,8,1)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, IMG_W, HERO_H);
+
+  if (logo) {
+    const lw = 170;
+    ctx.drawImage(logo, 48, 40, lw, (logo.height / logo.width) * lw);
+  }
+
+  // Título VALIENTES 26
+  ctx.font = '150px "Long Shot"';
+  ctx.fillStyle = C_GOLD;
+  const t1 = "VALIENTES";
+  ctx.fillText(t1, 48, HERO_H - 92);
+  const w1 = ctx.measureText(t1 + " ").width;
+  ctx.fillStyle = C_BONE;
+  ctx.fillText("26", 48 + w1, HERO_H - 92);
+
+  setSpacing(ctx, 2);
+  ctx.font = '800 23px Montserrat, sans-serif';
+  ctx.fillStyle = C_BONE;
+  ctx.fillText("12–15 NOV   ·   CAMPUS LLUTA KM 15   ·   ARICA", 48, HERO_H - 44);
+  setSpacing(ctx, 0);
+
+  // Encabezado del listado
+  const y0 = HERO_H;
+  ctx.fillStyle = C_GOLD;
+  ctx.fillRect(48, y0 + 52, 36, 3);
+  setSpacing(ctx, 5);
+  ctx.font = '800 22px Montserrat, sans-serif';
+  ctx.fillText("LISTADO", 100, y0 + 62);
+  setSpacing(ctx, 0);
+
+  ctx.font = '92px "Long Shot"';
+  ctx.fillStyle = C_BONE;
+  const title = noAccents((query || "TODOS LOS INSCRITOS").toUpperCase());
+  ctx.fillText(fitText(ctx, title, IMG_W - 96), 48, y0 + 158);
+
+  ctx.font = '600 26px Montserrat, sans-serif';
+  ctx.fillStyle = C_MUTE;
+  ctx.fillText(
+    `${sorted.length} ${sorted.length === 1 ? "participante" : "participantes"}  ·  orden alfabético`,
+    48,
+    y0 + 206
+  );
+
+  // Filas
+  const top = y0 + HEAD_H;
+  sorted.forEach((a, i) => {
+    const y = top + i * ROW_H;
+    ctx.fillStyle = C_LINE;
+    ctx.fillRect(48, y, IMG_W - 96, 1);
+
+    ctx.font = '48px "Long Shot"';
+    ctx.fillStyle = C_GOLD;
+    ctx.fillText(String(i + 1).padStart(2, "0"), 48, y + 62);
+
+    const statusW = opts.status ? 210 : 0;
+    const maxW = IMG_W - 150 - 48 - statusW;
+
+    ctx.font = '800 32px Montserrat, sans-serif';
+    ctx.fillStyle = C_BONE;
+    ctx.fillText(fitText(ctx, titleCase(`${a.nombre} ${a.apellido}`.trim()), maxW), 150, y + 46);
+
+    const sub = [a.congregacion && titleCase(a.congregacion), a.ciudad && titleCase(a.ciudad), opts.phone ? a.telefono : ""]
+      .filter(Boolean)
+      .join("  ·  ");
+    ctx.font = '500 22px Montserrat, sans-serif';
+    ctx.fillStyle = C_MUTE;
+    ctx.fillText(fitText(ctx, sub, maxW), 150, y + 80);
+
+    if (opts.status) {
+      const label = a.checkIn ? "ADENTRO" : a.confirmado ? "CONFIRMADO" : "PENDIENTE";
+      const color = a.checkIn ? "#22c55e" : a.confirmado ? C_GOLD : C_MUTE;
+      setSpacing(ctx, 2);
+      ctx.font = '800 18px Montserrat, sans-serif';
+      const tw = ctx.measureText(label).width;
+      const bx = IMG_W - 48 - tw - 28;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(bx, y + 30, tw + 28, 40);
+      ctx.fillStyle = color;
+      ctx.fillText(label, bx + 14, y + 57);
+      setSpacing(ctx, 0);
+    }
+  });
+  ctx.fillStyle = C_LINE;
+  ctx.fillRect(48, top + sorted.length * ROW_H, IMG_W - 96, 1);
+
+  // Pie dorado
+  const fy = total - FOOT_H;
+  ctx.fillStyle = C_GOLD;
+  ctx.fillRect(0, fy, IMG_W, FOOT_H);
+  ctx.fillStyle = "#111";
+  ctx.font = '800 30px Montserrat, sans-serif';
+  setSpacing(ctx, 2);
+  const foot = "COMUARICA.CL/VALIENTES  ·  @COMUARICA";
+  ctx.fillText(foot, (IMG_W - ctx.measureText(foot).width) / 2, fy + 60);
+  setSpacing(ctx, 0);
+
+  return canvas.toDataURL("image/png");
+}
+
 export default function CheckinValientesPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
@@ -57,6 +233,11 @@ export default function CheckinValientesPage() {
   const [syncingId, setSyncingId] = useState<string | null>(null);
 
   const pollingInterval = useRef<NodeJS.Timeout | null>(null);
+
+  const [listadoUrl, setListadoUrl] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [optPhone, setOptPhone] = useState(false);
+  const [optStatus, setOptStatus] = useState(false);
 
   // Fecha de apertura de ingresos para VALIENTES 26: 12 de Noviembre de 2026
   const OPEN_DATE = new Date("2026-11-12T00:00:00");
@@ -171,6 +352,28 @@ export default function CheckinValientesPage() {
     } finally {
       setSyncingId(null);
     }
+  };
+
+  const handleListado = async () => {
+    if (!filtered.length) return;
+    setGenerating(true);
+    try {
+      setListadoUrl(await buildListadoImage(filtered, search.trim(), { phone: optPhone, status: optStatus }));
+    } catch (e) {
+      console.error("Error creando listado:", e);
+      alert("No se pudo crear la imagen. Intenta de nuevo.");
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const downloadListado = () => {
+    if (!listadoUrl) return;
+    const slug = noAccents(search.trim().toLowerCase()).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "todos";
+    const a = document.createElement("a");
+    a.href = listadoUrl;
+    a.download = `valientes-listado-${slug}.png`;
+    a.click();
   };
 
   const checkedInCount = attendees.filter(a => a.checkIn).length;
@@ -364,6 +567,87 @@ export default function CheckinValientesPage() {
           text-align: center;
         }
 
+        .results-bar {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+          margin-bottom: 24px;
+        }
+        .results-count {
+          font-size: 14px;
+          color: #9ca3af;
+        }
+        .results-count strong {
+          color: #ffc20e;
+          font-size: 18px;
+        }
+        .results-tools {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 18px;
+        }
+        .check-opt {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 13px;
+          color: #cbd5e1;
+          cursor: pointer;
+        }
+        .check-opt input {
+          accent-color: #ffc20e;
+          width: 16px;
+          height: 16px;
+        }
+        .btn-gold {
+          background-color: #ffc20e;
+          color: #111;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+        .btn-gold:hover:not(:disabled) {
+          background-color: #ffd23f;
+        }
+        .btn-gold:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
+        }
+        .modal-back {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.82);
+          z-index: 300;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          overflow-y: auto;
+          padding: 24px 16px;
+        }
+        .modal-box {
+          width: 100%;
+          max-width: 560px;
+          background: #0b0a08;
+          border: 1px solid rgba(255, 194, 14, 0.35);
+          border-radius: 12px;
+          padding: 18px;
+        }
+        .modal-actions {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 14px;
+          flex-wrap: wrap;
+        }
+        .modal-box img {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 6px;
+        }
+
         .badge-confirmed {
           font-size: 10px;
           background: #d97706;
@@ -455,6 +739,30 @@ export default function CheckinValientesPage() {
             style={{ marginBottom: '30px' }}
           />
 
+          <div className="results-bar">
+            <div className="results-count">
+              <strong>{filtered.length}</strong> {filtered.length === 1 ? "resultado" : "resultados"}
+              {search.trim() && <> para &quot;{search.trim()}&quot;</>}
+            </div>
+            <div className="results-tools">
+              <label className="check-opt">
+                <input type="checkbox" checked={optPhone} onChange={(e) => setOptPhone(e.target.checked)} />
+                Incluir teléfono
+              </label>
+              <label className="check-opt">
+                <input type="checkbox" checked={optStatus} onChange={(e) => setOptStatus(e.target.checked)} />
+                Incluir estado
+              </label>
+              <button
+                onClick={handleListado}
+                disabled={generating || filtered.length === 0}
+                className="btn-ui btn-gold"
+              >
+                {generating ? "Creando..." : "Crear listado en imagen"}
+              </button>
+            </div>
+          </div>
+
           <div className="attendee-list">
             {filtered.map((attendee) => (
               <div key={attendee.id} className={`attendee-card ${attendee.confirmado ? 'confirmed' : ''} ${attendee.checkIn ? 'checked' : ''}`}>
@@ -505,6 +813,19 @@ export default function CheckinValientesPage() {
               </div>
             ))}
           </div>
+
+          {listadoUrl && (
+            <div className="modal-back" onClick={() => setListadoUrl(null)}>
+              <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-actions">
+                  <button onClick={downloadListado} className="btn-ui btn-gold">Descargar PNG (1080 px)</button>
+                  <button onClick={() => setListadoUrl(null)} className="btn-ui btn-dark">Cerrar</button>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={listadoUrl} alt="Listado de participantes de Valientes 26" />
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
