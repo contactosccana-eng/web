@@ -293,15 +293,15 @@ export default function CheckinValientesPage() {
   };
 
   useEffect(() => {
-    const q = search.toLowerCase();
+    // Búsqueda sin distinguir tildes ni mayúsculas; cada palabra escrita debe aparecer en algún dato.
+    const norm = (s: string) => noAccents(String(s ?? "").toLowerCase()).replace(/\s+/g, " ").trim();
+    const terms = norm(search).split(" ").filter(Boolean);
     setFiltered(
-      attendees.filter(
-        (a) =>
-          a.nombre.toLowerCase().includes(q) ||
-          a.apellido.toLowerCase().includes(q) ||
-          a.congregacion.toLowerCase().includes(q) ||
-          a.ciudad.toLowerCase().includes(q)
-      )
+      attendees.filter((a) => {
+        if (terms.length === 0) return true;
+        const hay = norm(`${a.nombre} ${a.apellido} ${a.congregacion} ${a.ciudad} ${a.pais} ${a.telefono}`);
+        return terms.every((t) => hay.includes(t));
+      })
     );
   }, [search, attendees]);
 
