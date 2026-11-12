@@ -556,27 +556,75 @@
 }
 
 /* ---------- Mapa ---------- */
-.mapLayout {
-  display: grid;
-  gap: 40px;
-  align-items: center;
+.mapSection {
+  padding: 88px 0 56px;
 }
-.mapFrame {
+.mapBand {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  min-height: 300px;
-  background: #000;
-  border: 1px solid var(--line);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  height: clamp(340px, 52vh, 500px);
+  background: #14120e;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
 }
-.mapFrame iframe {
+.mapBand iframe {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
+  filter: var(--map-filter);
+}
+.mapCard {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  max-width: calc(100% - 32px);
+  padding: 14px 18px 16px;
+  background: rgba(11, 10, 8, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.mapCardName {
+  font-size: 1.9rem;
+  color: var(--bone);
+  margin: 0;
+}
+.mapCardDesc {
+  margin: 6px 0 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.mapCardLink {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--bone);
+  border-bottom: 1px solid rgba(244, 239, 230, 0.4);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.mapCardLink:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.mapNote {
+  margin-top: 20px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--mute);
+}
+.mapNote strong {
+  color: var(--bone);
 }
 
 /* ---------- Cierre ---------- */
@@ -646,7 +694,6 @@
 @media (min-width: 820px) {
   .section { padding: 120px 0; }
   .videoLayout { grid-template-columns: 1.1fr 1fr; gap: 72px; }
-  .mapLayout { grid-template-columns: 1fr 1.2fr; gap: 64px; }
   .videoFrame { max-width: 380px; margin: 0 0 0 auto; }
   .about { grid-template-columns: 1.2fr 1fr; align-items: center; gap: 72px; }
   .day { grid-template-columns: 220px 1fr; align-items: start; }
