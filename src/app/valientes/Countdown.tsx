@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import styles from "./valientes.module.css";
 
-// Jueves 12 de noviembre de 2026, hora de Arica (UTC-3)
-const TARGET = new Date("2026-11-12T00:00:00-03:00").getTime();
+// Jueves 12 de noviembre de 2026, 19:00 (reunión de apertura), hora de Arica (UTC-3)
+const TARGET = new Date("2026-11-12T19:00:00-03:00").getTime();
 
 function parts(ms: number) {
   const s = Math.max(0, Math.floor(ms / 1000));

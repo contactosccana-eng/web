@@ -361,7 +361,7 @@ export default function ValientesPage() {
             <h3 className={`${styles.display} ${styles.mapCardName}`}>Campus Lluta</h3>
             <p className={styles.mapCardDesc}>Km 15 · Valle de Lluta · Arica</p>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=-18.4045259,-70.1637469"
+              href="https://maps.app.goo.gl/bU2Qk6iY1bRDEvRq5"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.mapCardLink}
@@ -370,7 +370,7 @@ export default function ValientesPage() {
             </a>
           </div>
           <iframe
-            src="https://maps.google.com/maps?q=-18.4045259,-70.1637469&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            src="https://maps.google.com/maps?q=-18.404531,-70.161172&t=&z=16&ie=UTF8&iwloc=&output=embed"
             title="Mapa de Campus Lluta"
             loading="lazy"
             allowFullScreen={false}
