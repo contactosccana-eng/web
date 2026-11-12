@@ -347,6 +347,41 @@ export default function ValientesPage() {
         </div>
       </section>
 
+      {/* COMO LLEGAR */}
+      <section className={styles.section} id="como-llegar">
+        <div className={`${styles.wrap} ${styles.mapLayout}`}>
+          <div>
+            <p className={styles.eyebrow}>Ubicación</p>
+            <h2 className={`${styles.display} ${styles.h2}`}>
+              Como llegar a <em>Campus Lluta</em>
+            </h2>
+            <p className={styles.lead}>Campus Lluta, km 15, valle de Lluta, Arica.</p>
+            <p className={styles.body}>
+              El jueves 12 salimos juntos a las 21:00 desde el Auditorio Comuarica (Av. Santa María #2950) rumbo a
+              Campus Lluta.
+            </p>
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=-18.404525,-70.163747"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.btn} ${styles.btnGhost}`}
+              style={{ marginTop: 28 }}
+            >
+              Abrir en Google Maps
+            </a>
+          </div>
+          <div className={styles.mapFrame}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.498620244436!2d-70.16374692497014!3d-18.404525892624637!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915aa70003ed7f05%3A0x87316802a7e57889!2sComunidad%20Iglesia%20Cristiana%20%C2%B7%20Campus%20Lluta!5e1!3m2!1ses-419!2scl!4v1794450728332!5m2!1ses-419!2scl"
+              title="Mapa de Campus Lluta"
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* CIERRE */}
       <section className={styles.final}>
         <div className={styles.finalBg}>
